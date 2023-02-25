@@ -1,0 +1,35 @@
+import discord
+import requests
+
+client = discord.Client()
+
+@client.event
+async def on_ready():
+    print('Logged in as {0.user}'.format(client))
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('/play'):
+        query = message.content.split(maxsplit=1)[1]
+        r = requests.get('http://localhost:8087/api/v1/bot/%s/play' % query)
+
+        if r.status_code != 200:
+            await message.channel.send('Não foi possível reproduzir a música. Por favor, tente novamente.')
+
+        else:
+            await message.channel.send('Reproduzindo música: ' + query)
+
+    elif message.content.startswith('/current'):
+        r = requests.get(http://127.0.0.1:8087/play/files)
+
+        if r.status_code != 200:
+            await message.channel.send('Não foi possível recuperar o nome da música atual.')
+
+        else:
+            current_track = r.json()['filename']
+            await message.channel.send('Tocando atualmente: ' + current_track)
+
+client.run(NTE3MTIxNzM0NDExOTQzOTY2.GKOD65.rzsv3iuFPN_1k2A7-9hvBwQ-vFel9KxPtswebY)
